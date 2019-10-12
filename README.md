@@ -1,0 +1,8 @@
+# DemoXMLY
+## 推荐页面完成
+	* 1、viewPage实现
+
+>
+inflate里面把ViewGroup传进去了，因为每一个View只能有一个父view即parentView。当container不为空时，比如此fragment所待在的activity的layout。而onCreateView中返回的view是给ViewPager使用的，所以就会出现这个view有两个parentView－即activity的layout和viewPager，所以会报出异常。只要如下解决即可：
+infalte的时候把ViewGroup参数设置为null，view的parentView是ViewPager，ViewPager的parentView是activity的layout。
+
