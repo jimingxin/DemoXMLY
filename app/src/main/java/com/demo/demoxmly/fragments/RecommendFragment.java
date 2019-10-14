@@ -1,10 +1,12 @@
 package com.demo.demoxmly.fragments;
 
+import android.graphics.Rect;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +17,8 @@ import com.demo.demoxmly.interfaces.IRecommendViewCallback;
 import com.demo.demoxmly.presenters.RecommendPresenter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
+
+import net.lucode.hackware.magicindicator.buildins.UIUtil;
 
 import java.util.List;
 
@@ -58,7 +62,16 @@ public class RecommendFragment extends BaseFragment implements IRecommendViewCal
         // 设置适配器
         mRecommendListAdapter = new AlbumListAdapter();
         mREcommendRv.setAdapter(mRecommendListAdapter);
+        mREcommendRv.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                outRect.top= UIUtil.dip2px(view.getContext(),5);
+                outRect.bottom= UIUtil.dip2px(view.getContext(),5);
+                outRect.left= UIUtil.dip2px(view.getContext(),5);
+                outRect.right= UIUtil.dip2px(view.getContext(),5);
 
+            }
+        });
 
         // 获取逻辑层
         mRecommendPresenter = RecommendPresenter.getInstance();

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.demo.demoxmly.R;
+import com.demo.demoxmly.utils.LogUtil;
 import com.squareup.picasso.Picasso;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 
@@ -34,6 +35,8 @@ public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.Inne
 
     private static final String TAG = "AlbumListAdapter";
     private List<Album> mData = new ArrayList<>();
+    private OnAlbumItemClickListener onAlbumItemClickListener;
+    private OnAlbumItemLongClickListener albumItemLongClickListener;
 
 
     @NonNull
@@ -47,6 +50,28 @@ public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.Inne
     public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
         holder.itemView.setTag(position);
         holder.setData(mData.get(position));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onAlbumItemClickListener != null){
+                    int clickPosition = (int)v.getTag();
+                    onAlbumItemClickListener.onItemClick(clickPosition,mData.get(clickPosition));
+                }
+                LogUtil.d(TAG,"holder.itemView click-->"+ (int)v.getTag());
+            }
+        });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (albumItemLongClickListener!=null){
+                    int clickPosition = (int) v.getTag();
+                    albumItemLongClickListener.onItemLongClick(mData.get(clickPosition));;
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -77,8 +102,14 @@ public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.Inne
             TextView albumt_title = itemView.findViewById(R.id.album_title_tv);
             TextView album_desc = itemView.findViewById(R.id.album_description_tv);
 
+            // 播放数量
+            TextView albumPlayCountTv = itemView.findViewById(R.id.album_play_count);
+            TextView albumContentCountTv = itemView.findViewById(R.id.album_content_size);
+
             albumt_title.setText(album.getAlbumTitle());
             album_desc.setText(album.getAlbumIntro());
+            albumPlayCountTv.setText(album.getPlayCount()+"");
+            albumContentCountTv.setText(album.getIncludeTrackCount() + "");
 
             // 设置封面图片
             String coverUrlarge = album.getCoverUrlLarge();
@@ -88,5 +119,21 @@ public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.Inne
                 albumCoverIv.setImageResource(R.mipmap.ximalay_logo);
             }
         }
+    }
+
+    public  void setAlbumItemClickListener(OnAlbumItemClickListener listener){
+        this.onAlbumItemClickListener = listener;
+    }
+
+    public interface OnAlbumItemClickListener{
+        void onItemClick(int position, Album album);
+    }
+
+    public void setOnAlbumItemLongClickListener(OnAlbumItemLongClickListener listener){
+        this.albumItemLongClickListener = listener;
+    }
+
+    public interface OnAlbumItemLongClickListener{
+        void onItemLongClick(Album album);
     }
 }
