@@ -19,4 +19,7 @@ public interface IRecommendViewCallback {
      * @param result the result
      */
     void onRecomendListLoaded(List<Album> result);
+
+
+    void onLoading();
 }

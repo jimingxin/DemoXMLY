@@ -15,6 +15,7 @@ import com.demo.demoxmly.adapters.AlbumListAdapter;
 import com.demo.demoxmly.base.BaseFragment;
 import com.demo.demoxmly.interfaces.IRecommendViewCallback;
 import com.demo.demoxmly.presenters.RecommendPresenter;
+import com.demo.demoxmly.views.UILoader;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 
@@ -38,9 +39,32 @@ public class RecommendFragment extends BaseFragment implements IRecommendViewCal
     private RecyclerView mREcommendRv;
     private AlbumListAdapter mRecommendListAdapter;
     private RecommendPresenter mRecommendPresenter;
+    private UILoader mUiLoader;
 
     @Override
-    protected View onSubViewLoaded(LayoutInflater layoutInflater, ViewGroup container) {
+    protected View onSubViewLoaded(final LayoutInflater layoutInflater, ViewGroup container) {
+
+        mUiLoader = new UILoader(getContext()) {
+            @Override
+            protected View getSuccessView(ViewGroup container) {
+                View mRootView = createSuccessView(layoutInflater,container);
+                return mRootView;
+            }
+        };
+
+        // 获取逻辑层
+        mRecommendPresenter = RecommendPresenter.getInstance();
+        mRecommendPresenter.registerViewCallback(this);
+        mRecommendPresenter.getRecommendList();
+
+        if (mUiLoader.getParent() instanceof ViewGroup){
+            ((ViewGroup)mUiLoader.getParent()).removeView(mUiLoader);
+        }
+
+        return mUiLoader;
+    }
+
+    private View createSuccessView(LayoutInflater layoutInflater,ViewGroup container) {
         /*
         *inflate里面把ViewGroup传进去了，因为每一个View只能有一个父view即parentView。当container不为空时，比如此fragment所待在的activity的layout。
         * 而onCreateView中返回的view是给ViewPager使用的，所以就会出现这个view有两个parentView－即activity的layout和viewPager，
@@ -73,17 +97,20 @@ public class RecommendFragment extends BaseFragment implements IRecommendViewCal
             }
         });
 
-        // 获取逻辑层
-        mRecommendPresenter = RecommendPresenter.getInstance();
-        mRecommendPresenter.registerViewCallback(this);
-        mRecommendPresenter.getRecommendList();
+
         return mRootView;
     }
 
     @Override
     public void onRecomendListLoaded(List<Album> result) {
-        mRecommendListAdapter.setData(result);
 
+        mRecommendListAdapter.setData(result);
+        mUiLoader.updateStatus(UILoader.UIStatus.SUCCESS);
+    }
+
+    @Override
+    public void onLoading() {
+        mUiLoader.updateStatus(UILoader.UIStatus.LOADING);
     }
 
     @Override

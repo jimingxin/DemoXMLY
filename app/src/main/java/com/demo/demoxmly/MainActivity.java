@@ -23,7 +23,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigat
 import java.util.List;
 
 
-public class MainActivity extends FragmentActivity implements IRecommendViewCallback {
+public class MainActivity extends FragmentActivity  {
 
     private static final String TAG = "MainActivity";
     private MagicIndicator mMagicIndicator;
@@ -95,8 +95,4 @@ public class MainActivity extends FragmentActivity implements IRecommendViewCall
     }
 
 
-    @Override
-    public void onRecomendListLoaded(List<Album> result) {
-
-    }
 }

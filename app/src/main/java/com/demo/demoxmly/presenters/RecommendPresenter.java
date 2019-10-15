@@ -58,6 +58,12 @@ public class RecommendPresenter implements IRecommendPresenter {
 
     @Override
     public void getRecommendList() {
+        if (mRecommendList != null && mRecommendList.size() > 0){
+            handlerRecommendResult(mRecommendList);
+            return;
+        }
+
+        updateLoading();
         XimalayApi ximalayApi = XimalayApi.getXimalayApi();
         ximalayApi.getRecommendList(new IDataCallBack<GussLikeAlbumList>() {
             @Override
@@ -74,6 +80,12 @@ public class RecommendPresenter implements IRecommendPresenter {
                 LogUtil.d(TAG,"error:"+s);
             }
         });
+    }
+
+    private void updateLoading() {
+        for (IRecommendViewCallback callback : mCallbacks){
+            callback.onLoading();
+        }
     }
 
     private void handlerRecommendResult(List<Album> mRecommendList) {
