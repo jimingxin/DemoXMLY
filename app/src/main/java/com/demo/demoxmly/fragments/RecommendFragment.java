@@ -97,9 +97,23 @@ public class RecommendFragment extends BaseFragment implements IRecommendViewCal
             }
         });
 
+        mRecommendListAdapter.setAlbumItemClickListener(new AlbumListAdapter.OnAlbumItemClickListener() {
+            @Override
+            public void onItemClick(int position, Album album) {
+
+            }
+        });
+
+        mRecommendListAdapter.setOnAlbumItemLongClickListener(new AlbumListAdapter.OnAlbumItemLongClickListener() {
+            @Override
+            public void onItemLongClick(Album album) {
+
+            }
+        });
 
         return mRootView;
     }
+
 
     @Override
     public void onRecomendListLoaded(List<Album> result) {
