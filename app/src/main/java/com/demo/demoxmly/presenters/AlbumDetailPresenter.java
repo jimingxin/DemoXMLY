@@ -85,7 +85,11 @@ public class AlbumDetailPresenter implements IAlbumDetailPresenter {
 
             @Override
             public void onError(int i, String s) {
+                if (isLoaderMore) {
+                    mCurrentPageIndex--;
+                }
 
+                handlerError(i,s);
             }
         },mCurrentAlbumId,mCurrentPageIndex);
     }
@@ -102,9 +106,19 @@ public class AlbumDetailPresenter implements IAlbumDetailPresenter {
         }
     }
 
+    private void handlerError(int errorCode ,String errorMsg){
+        for (IAlbumDetailViewCallback callback : mCallbacks){
+            callback.onNetworkError(errorCode,errorMsg);
+        }
+    }
+
     @Override
     public void getAlbumDetail(int albumId, int page) {
-
+        mTracks.clear();
+        this.mCurrentAlbumId =albumId;
+        this.mCurrentPageIndex = page;
+        // 根据页码和专辑id获取列表
+        doLoaded(false);
     }
 
     @Override
@@ -120,5 +134,9 @@ public class AlbumDetailPresenter implements IAlbumDetailPresenter {
     @Override
     public void unRegisterViewCallback(IAlbumDetailViewCallback detailViewCallback) {
         mCallbacks.remove(detailViewCallback);
+    }
+
+    public void setTargetAlbum(Album mTargetAlbum) {
+        this.mTargetAlbum = mTargetAlbum;
     }
 }

@@ -4,12 +4,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailActivity">
+    tools:context=".DetailActivity"
+    android:fitsSystemWindows="true"
+    android:background="@color/Blue">
 
-    <TextView
+    <ImageView
+        android:id="@+id/iv_large_cover"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_150"
+        android:scaleType="fitXY"/>
+
+    <RelativeLayout
+        android:id="@+id/subscription_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:layout_below="@+id/iv_large_cover"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/detail_sub_btn"
+            android:layout_width="@dimen/dp_75"
+            android:layout_height="@dimen/dp_30"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_14"
+            android:background="@drawable/shape_subscription_bg"
+            android:gravity="center"
+            android:text="+ 订阅"
+            android:textColor="@color/white"
+            />
+
+    </RelativeLayout>
+
+    <com.demo.demoxmly.views.RoundRectImage
+        android:id="@+id/viv_small_cover"
+        android:layout_width="@dimen/dp_75"
+        android:layout_height="@dimen/dp_75"
+        android:layout_below="@+id/iv_large_cover"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="-40dp"/>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="详细页面"/>
+        android:layout_below="@id/iv_large_cover"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_30"
+        android:layout_toRightOf="@id/viv_small_cover"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_album_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="这是标题"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_18"/>
+
+        <TextView
+            android:id="@+id/tv_album_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="这个是作者信息"
+            android:textColor="@color/sub_text_title"
+            android:textSize="12sp" />
+
+    </LinearLayout>
 
 </RelativeLayout>

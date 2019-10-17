@@ -16,6 +16,7 @@ import com.demo.demoxmly.R;
 import com.demo.demoxmly.adapters.AlbumListAdapter;
 import com.demo.demoxmly.base.BaseFragment;
 import com.demo.demoxmly.interfaces.IRecommendViewCallback;
+import com.demo.demoxmly.presenters.AlbumDetailPresenter;
 import com.demo.demoxmly.presenters.RecommendPresenter;
 import com.demo.demoxmly.views.UILoader;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
@@ -102,6 +103,8 @@ public class RecommendFragment extends BaseFragment implements IRecommendViewCal
         mRecommendListAdapter.setAlbumItemClickListener(new AlbumListAdapter.OnAlbumItemClickListener() {
             @Override
             public void onItemClick(int position, Album album) {
+
+                AlbumDetailPresenter.getInstance().setTargetAlbum(album);;
                 Intent intent = new Intent(getContext(), DetailActivity.class);
                 startActivity(intent);
             }
