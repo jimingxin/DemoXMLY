@@ -5,6 +5,7 @@ import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
 import com.ximalaya.ting.android.opensdk.model.album.GussLikeAlbumList;
+import com.ximalaya.ting.android.opensdk.model.track.TrackList;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +23,11 @@ public class XimalayApi {
     }
 
 
+    /**
+     * Get ximalay api ximalay api.
+     *
+     * @return the ximalay api
+     */
     public static XimalayApi getXimalayApi(){
         if (sXimalayApi == null){
             synchronized (XimalayApi.class){
@@ -43,6 +49,24 @@ public class XimalayApi {
         Map<String,String> map = new HashMap<>();
         map.put(DTransferConstants.LIKE_COUNT, Constants.COUNT_RECOMMEND+"");
         CommonRequest.getGuessLikeAlbum(map,callBack);
+    }
+
+
+    /**
+     * Get album detail.
+     *
+     * @param callback  the call back
+     * @param albumId   the album id
+     * @param pageIndex the page index
+     */
+    public void getAlbumDetail(IDataCallBack<TrackList> callback,long albumId, int pageIndex){
+        Map<String,String> map = new HashMap<>();
+        map.put(DTransferConstants.SORT,"asc");
+        map.put(DTransferConstants.ALBUM_ID,albumId+"");
+        map.put(DTransferConstants.PAGE, pageIndex + "");
+        map.put(DTransferConstants.PAGE_SIZE, Constants.COUNT_DEFAULT + "");
+        CommonRequest.getTracks(map, callback);
+
     }
 
 }

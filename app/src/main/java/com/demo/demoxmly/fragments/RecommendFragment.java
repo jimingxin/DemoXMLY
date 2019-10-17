@@ -1,5 +1,6 @@
 package com.demo.demoxmly.fragments;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.demo.demoxmly.DetailActivity;
 import com.demo.demoxmly.R;
 import com.demo.demoxmly.adapters.AlbumListAdapter;
 import com.demo.demoxmly.base.BaseFragment;
@@ -100,7 +102,8 @@ public class RecommendFragment extends BaseFragment implements IRecommendViewCal
         mRecommendListAdapter.setAlbumItemClickListener(new AlbumListAdapter.OnAlbumItemClickListener() {
             @Override
             public void onItemClick(int position, Album album) {
-
+                Intent intent = new Intent(getContext(), DetailActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -16,7 +16,7 @@ import com.demo.demoxmly.base.IBasePresenter;
  * @UpdateRemark: 更新说明 ：
  * @Version: 1.0
  */
-public interface IAlbumDetailPresenter extends IBasePresenter {
+public interface IAlbumDetailPresenter extends IBasePresenter<IAlbumDetailViewCallback> {
 
     /**
      * Pull 2 refresh more.
