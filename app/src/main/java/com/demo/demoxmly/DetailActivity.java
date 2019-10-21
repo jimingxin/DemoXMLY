@@ -1,10 +1,12 @@
 package com.demo.demoxmly;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,9 +29,11 @@ import com.squareup.picasso.Picasso;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
+import net.lucode.hackware.magicindicator.buildins.UIUtil;
+
 import java.util.List;
 
-public class DetailActivity extends AppCompatActivity implements IAlbumDetailViewCallback {
+public class DetailActivity extends AppCompatActivity implements IAlbumDetailViewCallback, TrackListAdapter.ItemClickListener {
 
     private static final String TAG = "DetailActivity";
     private Album album;
@@ -50,6 +54,7 @@ public class DetailActivity extends AppCompatActivity implements IAlbumDetailVie
     private ImageView mPlayControlBtn;
     private TextView mPlayControlTips;
     private TwinklingRefreshLayout mRefreshLayout;
+    private TrackListAdapter mDetailListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,7 @@ public class DetailActivity extends AppCompatActivity implements IAlbumDetailVie
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
 
+        mCurrentPage = 1;
         initView();
         initPresenter();
     }
@@ -90,15 +96,9 @@ public class DetailActivity extends AppCompatActivity implements IAlbumDetailVie
 
     private View createSuccessView(ViewGroup container) {
 
-        View detailListView = LayoutInflater.from(this).inflate(R.layout.item_detail_list,container,false)
+        View detailListView = LayoutInflater.from(this).inflate(R.layout.item_detail_list,container,false);
         mDetailList = detailListView.findViewById(R.id.album_detail_list);
         mRefreshLayout = detailListView.findViewById(R.id.refresh_layout);
-    }
-
-
-    private void initPresenter(){
-        mAlbumDetailPresenter =AlbumDetailPresenter.getInstance();
-        mAlbumDetailPresenter.registerViewCallback(this);
 
         // RecyclerView使用步骤
         // 第一步：设置布局管理器
@@ -106,18 +106,53 @@ public class DetailActivity extends AppCompatActivity implements IAlbumDetailVie
         mDetailList.setLayoutManager(layoutManager);
         // 第二步：设置适配器
         mDetailListAdapter = new TrackListAdapter();
+        mDetailList.setAdapter(mDetailListAdapter);
+
+        // 设置item的上下间距
+        mDetailList.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                outRect.top = UIUtil.dip2px(view.getContext(), 2);
+                outRect.bottom = UIUtil.dip2px(view.getContext(), 2);
+                outRect.left = UIUtil.dip2px(view.getContext(), 2);
+                outRect.right = UIUtil.dip2px(view.getContext(), 2);
+            }
+        });
+
+        mDetailListAdapter.setItemClickListener(this);
+        return  detailListView;
+    }
+
+
+    private void initPresenter(){
+        mAlbumDetailPresenter =AlbumDetailPresenter.getInstance();
+        mAlbumDetailPresenter.registerViewCallback(this);
+
+
     }
 
 
 
     @Override
     public void onDeatilListLoaded(List<Track> tracks) {
+        LogUtil.d(TAG,"tracks size:"+tracks.size());
 
+        if (tracks == null || tracks.size() == 0){
+            if (mUiLoader != null){
+                mUiLoader.updateStatus(UILoader.UIStatus.EMPTY);
+            }
+        }
+
+        if (mUiLoader != null){
+           // mUiLoader.updateStatus(UILoader.UIStatus.SUCCESS);
+        }
+
+        mDetailListAdapter.setData(tracks);
     }
 
     @Override
     public void onNetworkError(int erroCode, String errorMsg) {
-
+        LogUtil.d(TAG,errorMsg);
     }
 
     @Override
@@ -184,5 +219,10 @@ public class DetailActivity extends AppCompatActivity implements IAlbumDetailVie
         super.onDestroy();
 
         mAlbumDetailPresenter.unRegisterViewCallback(this);
+    }
+
+    @Override
+    public void onItemClick(List<Track> detailData, int positon) {
+        LogUtil.d(TAG,detailData.size() + "");
     }
 }

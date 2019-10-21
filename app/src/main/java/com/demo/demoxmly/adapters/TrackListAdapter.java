@@ -3,6 +3,7 @@ package com.demo.demoxmly.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,9 +46,51 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.Inne
     }
 
     @Override
-    public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
+    public void onBindViewHolder(@NonNull InnerHolder holder, final int position) {
         View itemView = holder.itemView;
+        // 顺序id
+        TextView orderTv = itemView.findViewById(R.id.order_text);
+        //标题
+        TextView titleTv = itemView.findViewById(R.id.detail_item_title);
+        //播放次数
+        TextView playCountTv = itemView.findViewById(R.id.detail_item_play_count);
+        //时长
+        TextView durationTv = itemView.findViewById(R.id.detail_item_duration);
+        //更新日期
+        TextView updateDateTv = itemView.findViewById(R.id.detail_item_update_time);
 
+        // 设置数据
+        final  Track track = mDetailData.get(position);
+        orderTv.setText((position + 1) + "");
+        titleTv.setText(track.getTrackTitle());
+        playCountTv.setText(track.getPlayCount()+"");
+
+        int durationMil = track.getDuration() * 1000;
+        String duratin = mDurationFormat.format(durationMil);
+        durationTv.setText(duratin);
+
+        String updateTimeText = mUpdateDateFormat.format(track.getUpdatedAt());
+        updateDateTv.setText(updateTimeText);
+
+        // 设置Item的点击事件
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mItemClickListener != null){
+                    mItemClickListener.onItemClick(mDetailData,position);
+                }
+            }
+        });
+
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mItemLongClickListener != null){
+                    mItemLongClickListener.onItemLongClick(track);
+                }
+                return true;
+            }
+        });
     }
 
     @Override
