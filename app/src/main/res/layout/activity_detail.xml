@@ -5,14 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DetailActivity"
-    android:fitsSystemWindows="true"
     android:background="@color/Blue">
 
     <ImageView
         android:id="@+id/iv_large_cover"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_150"
-        android:scaleType="fitXY"/>
+        android:scaleType="centerCrop"/>
 
     <RelativeLayout
         android:id="@+id/subscription_container"
@@ -49,15 +48,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_large_cover"
         android:layout_marginLeft="@dimen/dp_20"
-        android:layout_marginTop="@dimen/dp_30"
+        android:layout_marginTop="-30dp"
         android:layout_toRightOf="@id/viv_small_cover"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <TextView
             android:id="@+id/tv_album_title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_30"
             android:text="这是标题"
+            android:ellipsize="end"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_18"/>
 
@@ -71,5 +72,58 @@
             android:textSize="12sp" />
 
     </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/player_control_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:layout_below="@+id/subscription_container"
+        android:background="#EBE8E8">
+
+        <ImageView
+            android:id="@+id/detail_play_control"
+            android:layout_width="@dimen/dp_39"
+            android:layout_height="@dimen/dp_39"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_5"
+            android:paddingBottom="@dimen/dp_0"
+            android:src="@drawable/selector_play_control_paly"/>
+
+        <TextView
+            android:id="@+id/play_control_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_2"
+            android:layout_marginRight="@dimen/dp_140"
+            android:layout_toRightOf="@+id/detail_play_control"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:text="点击播放"
+            android:textSize="@dimen/sp_14"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp_4"
+            android:layout_toLeftOf="@+id/detail_arrow"/>
+
+        <ImageView
+            android:id="@+id/detail_arrow"
+            android:layout_width="@dimen/dp_16"
+            android:layout_height="@dimen/dp_8"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_18"
+            android:src="@mipmap/arrow_icon"/>
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/detail_list_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/player_control_container"/>
 
 </RelativeLayout>

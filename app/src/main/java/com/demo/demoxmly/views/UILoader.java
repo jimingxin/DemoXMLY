@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.demo.demoxmly.DetailActivity;
 import com.demo.demoxmly.R;
 import com.demo.demoxmly.base.BaseApplication;
 
@@ -26,7 +27,7 @@ public abstract class UILoader extends FrameLayout {
 
     public UIStatus mCurrentStatus = UIStatus.NONE;
 
-    public UILoader(@NonNull Context context) {
+    public UILoader(Context context) {
         this(context, null);
     }
 

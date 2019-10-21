@@ -1,11 +1,14 @@
 package com.demo.demoxmly;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +17,7 @@ import com.demo.demoxmly.presenters.AlbumDetailPresenter;
 import com.demo.demoxmly.utils.ImageBlur;
 import com.demo.demoxmly.utils.LogUtil;
 import com.demo.demoxmly.views.RoundRectImage;
+import com.demo.demoxmly.views.UILoader;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
@@ -34,12 +38,19 @@ public class DetailActivity extends AppCompatActivity implements IAlbumDetailVie
     private TextView mSubBtn;
     private long mCurrentId;
     private int mCurrentPage;
+    private FrameLayout mDetailListContainer;
+    private UILoader mUiLoader;
+    private RecyclerView mDetailList;
+
+    // 播放相关的
+    private ImageView mPlayControlBtn;
+    private TextView mPlayControlTips;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
 
         initView();
@@ -48,12 +59,27 @@ public class DetailActivity extends AppCompatActivity implements IAlbumDetailVie
 
     private void initView() {
 
+        mDetailListContainer = this.findViewById(R.id.detail_list_container);
+        if (mUiLoader == null){
+            mUiLoader = new UILoader(this) {
+                @Override
+                protected View getSuccessView(ViewGroup container) {
+                    return null;
+                }
+            };
+            mDetailListContainer.removeAllViews();
+            mDetailListContainer.addView(mUiLoader);
+
+        }
+
         mLargeCover = this.findViewById(R.id.iv_large_cover);
         mSmallCover = this.findViewById(R.id.viv_small_cover);
         mAlbumTitle  = this.findViewById(R.id.tv_album_title);
         mAlbumAuthor = this.findViewById(R.id.tv_album_author);
 
         mSubBtn = this.findViewById(R.id.detail_sub_btn);
+
+        //
     }
 
 
