@@ -23,6 +23,8 @@
         tools:targetApi="m">
         <activity android:name=".DetailActivity"
             android:screenOrientation="portrait"></activity>
+        <activity android:name=".PlayerActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

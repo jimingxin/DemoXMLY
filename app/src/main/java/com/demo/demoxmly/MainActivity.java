@@ -12,6 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.demo.demoxmly.adapters.IndicatorAdapter;
 import com.demo.demoxmly.adapters.MainContentAdapter;
+import com.demo.demoxmly.base.BaseActivity;
 import com.demo.demoxmly.interfaces.IRecommendViewCallback;
 import com.demo.demoxmly.utils.FragmentCreator;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
@@ -23,7 +24,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigat
 import java.util.List;
 
 
-public class MainActivity extends FragmentActivity  {
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
     private MagicIndicator mMagicIndicator;

@@ -20,6 +20,7 @@ public abstract class UILoader extends FrameLayout {
     private View mSuccessView;
     private View mNetworkErrorView;
     private View mEmptyView;
+    private OnRetryClickListener onRetryClickListener;
 
     public enum UIStatus {
         LOADING, SUCCESS, NETWORK_ERROR, EMPTY, NONE
@@ -43,6 +44,7 @@ public abstract class UILoader extends FrameLayout {
 
     public void updateStatus(UIStatus status){
         mCurrentStatus = status;
+        // 更新需要在主线程
         BaseApplication.getHandler().post(new Runnable() {
             @Override
             public void run() {
@@ -93,7 +95,14 @@ public abstract class UILoader extends FrameLayout {
 
     private View getNetworkErrorView() {
         View networkErrorView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_error_view,this,false);
-
+        networkErrorView.findViewById(R.id.network_error_icon).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onRetryClickListener != null) {
+                    onRetryClickListener.onRetryClick();
+                }
+            }
+        });
         return networkErrorView;
     }
 
@@ -101,5 +110,14 @@ public abstract class UILoader extends FrameLayout {
 
     private View getLoadingView() {
         return LayoutInflater.from(getContext()).inflate(R.layout.frame_loading_view, this, false);
+    }
+
+
+    public void setOnRetryClickListener(OnRetryClickListener listener){
+        onRetryClickListener = listener;
+    }
+
+    public interface OnRetryClickListener{
+        void onRetryClick();
     }
 }
